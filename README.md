@@ -14,5 +14,7 @@
     <a href="https://ok.ru/videoembed/16762574670495">WAAA-697</a> -
     <a href="https://ok.ru/videoembed/16763662830239">CJOD-538</a> -
     <a href="https://ok.ru/videoembed/16764094319263">OAE-291</a> -
+    <a href="https://ok.ru/videoembed/16764684733087">HMN-872</a> -
+    <a href="https://ok.ru/videoembed/16770243824287">N0469</a> -
 </div>
 
