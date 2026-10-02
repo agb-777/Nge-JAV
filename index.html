@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daftar Kode</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: monospace;
+    font-size: 16px;
+    padding: 12px;
+    background: #111;
+    color: #ddd;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Hero image: center, responsif */
+  .hero {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .hero img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    max-height: 240px;
+    object-fit: contain;
+  }
+
+  #list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  #list a {
+    display: inline-block;
+    padding: 10px 12px;
+    border: 1px solid #fff;
+    color: #6cb6ff;
+    white-space: nowrap;
+    line-height: 1.2;
+    font-size: 0.95rem;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #message {
+    margin-top: 12px;
+    color: #ddd;
+  }
+
+  footer {
+    margin-top: auto;
+    padding-top: 24px;
+    font-size: 0.85rem;
+    color: #888;
+    text-align: center;
+    overflow-wrap: break-word;
+  }
+
+  /* Tablet */
+  @media (max-width: 768px) {
+    body {
+      font-size: 15px;
+      padding: 10px;
+    }
+
+    .hero img {
+      max-height: 180px;
+    }
+
+    #list a {
+      padding: 9px 10px;
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    body {
+      font-size: 14px;
+      padding: 8px;
+    }
+
+    .hero {
+      margin-bottom: 12px;
+    }
+
+    .hero img {
+      max-height: 140px;
+    }
+
+    #list {
+      gap: 5px;
+    }
+
+    #list a {
+      padding: 8px 10px;
+      font-size: 0.85rem;
+    }
+
+    footer {
+      padding-top: 16px;
+      font-size: 0.8rem;
+    }
+  }
+
+  /* Mobile sangat kecil */
+  @media (max-width: 320px) {
+    #list a {
+      padding: 7px 8px;
+      font-size: 0.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <img src="hero.png" alt="" onerror="this.remove()">
+</div>
+
+<div id="list"></div>
+<div id="message"></div>
+
+<footer>&copy; 2026 Nge-JAV</footer>
+
+<script>
+(function () {
+  var listEl = document.getElementById('list');
+  var msgEl = document.getElementById('message');
+
+  function isSafeUrl(u) {
+    return typeof u === 'string' && /^https?:\/\//i.test(u);
+  }
+
+  fetch('urls.json')
+    .then(function (res) {
+      if (!res.ok) {
+        throw new Error('HTTP ' + res.status);
+      }
+      return res.json();
+    })
+    .then(function (data) {
+      if (!Array.isArray(data) || data.length === 0) {
+        msgEl.textContent = 'Tidak ada data kode.';
+        return;
+      }
+
+      var frag = document.createDocumentFragment();
+      var rendered = 0;
+
+      data.forEach(function (item) {
+        if (!item || typeof item.code === 'undefined' || item.code === null) return;
+        if (!isSafeUrl(item.url)) return;
+
+        var a = document.createElement('a');
+        a.textContent = String(item.code);
+        a.href = item.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        frag.appendChild(a);
+        rendered++;
+      });
+
+      if (rendered === 0) {
+        msgEl.textContent = 'Tidak ada data kode yang valid.';
+        return;
+      }
+
+      listEl.appendChild(frag);
+    })
+    .catch(function (err) {
+      msgEl.textContent = 'Gagal memuat data: ' + err.message;
+    });
+})();
+</script>
+
+</body>
+</html>
